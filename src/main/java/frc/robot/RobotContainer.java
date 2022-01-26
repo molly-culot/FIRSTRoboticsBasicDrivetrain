@@ -10,9 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -23,9 +21,10 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   private final Drivetrain drivetrain;
+  private final ShiftGearCommand shiftGear;
   private static Joystick driverJoystick;
-  private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
+
+
   public DriveCommand driveCommand; 
   // The robot's subsystems and commands are defined here...
     public RobotContainer(){
@@ -40,11 +39,15 @@ public class RobotContainer {
 
     //private void configreButtonBindings(){} 
     
-    public Command getAutonomousCommand() {
+    /**public Command getAutonomousCommand() {
       return autoCommand;
-    }
+    }*/
     public Command getTeleopCommand(){
       return driveCommand;
+    }
+
+    public Command getAutonomousCommand() {
+      return null;
     }
   
   }

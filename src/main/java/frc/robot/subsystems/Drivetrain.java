@@ -6,8 +6,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,26 +22,64 @@ public class Drivetrain extends SubsystemBase {
   WPI_TalonFX backLeftController;
   WPI_TalonFX backRightController;
 
+  DoubleSolenoid gearShifter;
+
+  boolean lowGear;
+
+
   public Drivetrain() {
     // controllers
     frontLeftController = new WPI_TalonFX(Constants.LEFT_FRONT_TALON);
     frontRightController = new WPI_TalonFX(Constants.RIGHT_FRONT_TALON);
     backLeftController = new WPI_TalonFX(Constants.LEFT_BACK_TALON);
     backRightController = new WPI_TalonFX(Constants.RIGHT_BACK_TALON);
+    
+    frontLeftController.setInverted(TalonFXInvertType.Clockwise);
+    frontRightController.setInverted(TalonFXInvertType.Clockwise);
+    backLeftController.setInverted(TalonFXInvertType.Clockwise);
+    backLeftController.setInverted(TalonFXInvertType.Clockwise);
 
-    backLeftController.follow(frontLeftController);
-    backRightController.follow(frontRightController);
-   
+    frontLeftController.configFactoryDefault();
+    frontRightController.configFactoryDefault();
+    backLeftController.configFactoryDefault();
+    backRightController.configFactoryDefault();
+
+    lowGear = false;
   }
   public void diffDrive(double X_AXIS, double Y_AXIS){
     //differentialDrive.arcadeDrive(X_AXIS,Y_AXIS);
+
     frontRightController.set(ControlMode.PercentOutput, Y_AXIS, DemandType.ArbitraryFeedForward, X_AXIS);
     frontLeftController.set(ControlMode.PercentOutput, Y_AXIS, DemandType.ArbitraryFeedForward, -X_AXIS);
 
+    backLeftController.follow(frontLeftController);
+    backRightController.follow(frontRightController);
+
   }
 
+  public boolean shiftGear(){
+    if(lowGear == true){
+      gearShifter.set(DoubleSolenoid.Value.kReverse);
+      lowGear = false;
+    }
+    else{
+      gearShifter.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    if(lowGear){
+      lowGear = false;
+    }
+    else{
+      lowGear = true;
+    }
+
+    return lowGear;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+  public void simulationPeriodic(){
+    //to be implemented later
   }
 }

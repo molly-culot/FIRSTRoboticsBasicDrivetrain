@@ -24,11 +24,18 @@
 /They are also final meaning the values of the varibles can not be overridden
 */
 public final class Constants {
-    //motors
-    public static final int LEFT_BACK_TALON = 1;
+    //ports
+    public static final int RIGHT_FRONT_TALON = 4;
     public static final int LEFT_FRONT_TALON = 2;
     public static final int RIGHT_BACK_TALON = 3;
-    public static final int RIGHT_FRONT_TALON = 4;
+    public static final int LEFT_BACK_TALON = 1;
+
+    public static final int GEAR_SHIFT_DEPLOY = 1;
+    public static final int GEAR_SHIFT_RETRACT = 0;
+
+    public static final double ACCELERATION_CONSTANT = 2;
+
+
 
     
     
