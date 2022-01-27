@@ -8,10 +8,11 @@ package frc.robot;
 
 //imports joystick
 import edu.wpi.first.wpilibj.Joystick;
-//import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ShiftGearCommand;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,23 +22,27 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   private final Drivetrain drivetrain;
-  private final ShiftGearCommand shiftGear;
-  private static Joystick driverJoystick;
+  private final ShiftGearCommand shiftgear;
+  private static Joystick driverjoystick;
 
 
-  public DriveCommand driveCommand; 
+  private final DriveCommand driveCommand; 
   // The robot's subsystems and commands are defined here...
-    public RobotContainer(){
-      
-      //Creating an object for the drivetrain so the classes can be accessed
-      drivetrain = new Drivetrain();
-      //Creating an object for joystick
-      driverJoystick = new Joystick(0);
-      //initalizing drivecommand
-      driveCommand = new DriveCommand(driverJoystick.getRawAxis(0), driverJoystick.getRawAxis(1), drivetrain);
-    }
-
-    //private void configreButtonBindings(){} 
+  public RobotContainer() {
+    //Creating an object for the drivetrain so the classes can be accessed
+    drivetrain = new Drivetrain();
+    //Creating an object for joystick
+    driverjoystick = new Joystick(0);
+   //initalizing drivecommand
+    driveCommand = new DriveCommand(drivetrain, driverjoystick);
+  //driveCommand = new DriveCommand(driverJoystick.getRawAxis(0), driverJoystick.getRawAxis(1), drivetrain);
+    shiftgear = new ShiftGearCommand(drivetrain);
+    
+    this.configureButtonBindings();
+  }
+  private void configureButtonBindings(){
+    JoystickButton gearShiftButton = new JoystickButton(driverjoystick,1);
+  } 
     
     /**public Command getAutonomousCommand() {
       return autoCommand;

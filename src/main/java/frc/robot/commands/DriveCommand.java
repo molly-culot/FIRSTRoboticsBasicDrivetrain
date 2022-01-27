@@ -10,18 +10,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 //Joysticks X and Y
 import frc.robot.subsystems.Drivetrain;
 
+import edu.wpi.first.wpilibj.Joystick;
+
+import frc.robot.Constants;
+
+
 
 public class DriveCommand extends CommandBase {
-  public double joystickInputX;
-  public double joystickInputY;
+  private final Joystick joystick;
+  private final Drivetrain drivetrain;
 
   private Drivetrain driveSubsystem;
   /** Creates a new DriveCommand. */
-  public DriveCommand(double inputX, double inputY, Drivetrain driveTrain) {
+  public DriveCommand(Drivetrain dt, Joystick js) {
     // Use addRequirements() here to declare subsystem dependencies.
-    joystickInputX = inputX;
-    joystickInputY = inputY;
-    driveSubsystem = driveTrain;
+    drivetrain = dt;
+    joystick = js;
     addRequirements(driveSubsystem);
   }
 
@@ -33,7 +37,11 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.diffDrive(joystickInputX, joystickInputY);
+    double speed = this.joystick.getY();
+    double rotation = this.joystick.getX();
+    double squaredSpeed = Math.signum(speed) * Math.pow(speed, Constants.ACCELERATION_CONSTANT);
+    double squaredRotation = Math.signum(rotation) * Math.pow(rotation, Constants.ACCELERATION_CONSTANT);
+    this.drivetrain.diffDrive(squaredSpeed, squaredRotation);
   }
 
   // Called once the command ends or is interrupted.
