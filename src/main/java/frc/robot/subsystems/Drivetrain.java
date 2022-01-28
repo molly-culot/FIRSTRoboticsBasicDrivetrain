@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -44,36 +45,25 @@ public class Drivetrain extends SubsystemBase {
     backLeftController.configFactoryDefault();
     backRightController.configFactoryDefault();
 
+    gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_DEPLOY, Constants.GEAR_SHIFT_RETRACT);
+
     lowGear = false;
   }
-  public void diffDrive(double X_AXIS, double Y_AXIS){
+  public void diffDrive(double speed, double rotation){
     //differentialDrive.arcadeDrive(X_AXIS,Y_AXIS);
 
-    frontRightController.set(ControlMode.PercentOutput, Y_AXIS, DemandType.ArbitraryFeedForward, X_AXIS);
-    frontLeftController.set(ControlMode.PercentOutput, Y_AXIS, DemandType.ArbitraryFeedForward, -X_AXIS);
+    frontLeftController.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, rotation);
+    backLeftController.follow(this.frontLeftController);
 
-    backLeftController.follow(frontLeftController);
-    backRightController.follow(frontRightController);
+    frontRightController.set(ControlMode.PercentOutput, -speed, DemandType.ArbitraryFeedForward, rotation);
+    backRightController.follow(this.frontRightController);
 
   }
 
   public boolean shiftGear(){
-    if(lowGear == true){
-      gearShifter.set(DoubleSolenoid.Value.kReverse);
-      lowGear = false;
-    }
-    else{
-      gearShifter.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    if(lowGear){
-      lowGear = false;
-    }
-    else{
-      lowGear = true;
-    }
-
-    return lowGear;
+    gearShifter.set((this.lowGear) ? DoubleSolenoid.Value.kForward: DoubleSolenoid.Value.kReverse);
+    this.lowGear = !this.lowGear;
+    return this.lowGear;
   }
   @Override
   public void periodic() {

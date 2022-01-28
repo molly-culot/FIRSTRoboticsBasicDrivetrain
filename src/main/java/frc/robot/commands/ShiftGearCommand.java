@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class ShiftGearCommand extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  
   private final Drivetrain drivetrain;
+
   public ShiftGearCommand(Drivetrain dt) {
     drivetrain = dt;
     // Use requires() here to declare subsystem dependencies
@@ -18,23 +21,26 @@ public class ShiftGearCommand extends CommandBase {
 
   // Called just before this Command runs the first time
   @Override
-  public void initialize() {}
+  public void initialize() {
+    drivetrain.shiftGear();
+  }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    drivetrain.shiftGear();
+    
   }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+  // Make this return true when this Command no longer needs to run execute(
 
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {}
+  
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

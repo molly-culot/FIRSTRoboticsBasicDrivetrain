@@ -17,16 +17,17 @@ import frc.robot.Constants;
 
 
 public class DriveCommand extends CommandBase {
-  private final Joystick joystick;
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+
+  private Joystick joystick;
   private final Drivetrain drivetrain;
 
-  private Drivetrain driveSubsystem;
   /** Creates a new DriveCommand. */
   public DriveCommand(Drivetrain dt, Joystick js) {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrain = dt;
     joystick = js;
-    addRequirements(driveSubsystem);
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -37,8 +38,8 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = this.joystick.getY();
-    double rotation = this.joystick.getX();
+    double speed = joystick.getY();
+    double rotation = joystick.getX();
     double squaredSpeed = Math.signum(speed) * Math.pow(speed, Constants.ACCELERATION_CONSTANT);
     double squaredRotation = Math.signum(rotation) * Math.pow(rotation, Constants.ACCELERATION_CONSTANT);
     this.drivetrain.diffDrive(squaredSpeed, squaredRotation);

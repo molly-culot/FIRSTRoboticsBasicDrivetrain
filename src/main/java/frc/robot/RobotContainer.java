@@ -24,8 +24,6 @@ public class RobotContainer {
   private final Drivetrain drivetrain;
   private final ShiftGearCommand shiftgear;
   private static Joystick driverjoystick;
-
-
   private final DriveCommand driveCommand; 
   // The robot's subsystems and commands are defined here...
   public RobotContainer() {
@@ -42,6 +40,7 @@ public class RobotContainer {
   }
   private void configureButtonBindings(){
     JoystickButton gearShiftButton = new JoystickButton(driverjoystick,1);
+    gearShiftButton.whenPressed(shiftgear);
   } 
     
     /**public Command getAutonomousCommand() {
@@ -49,10 +48,6 @@ public class RobotContainer {
     }*/
     public Command getTeleopCommand(){
       return driveCommand;
-    }
-
-    public Command getAutonomousCommand() {
-      return null;
     }
   
   }
